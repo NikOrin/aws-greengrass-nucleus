@@ -20,6 +20,7 @@ import com.aws.greengrass.status.FleetStatusDetails;
 import com.aws.greengrass.status.FleetStatusService;
 import com.aws.greengrass.status.OverallStatus;
 import com.aws.greengrass.testcommons.testutilities.GGExtension;
+import com.aws.greengrass.testcommons.testutilities.PlatformTestUtils;
 import com.aws.greengrass.util.exceptions.TLSAuthException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,7 +127,7 @@ class PeriodicFleetStatusServiceTest extends BaseITCase {
                 GreengrassService.class.getName());
         assertNotNull(deviceConfiguration.getThingName());
         // Wait for some time for the publish request to have all the components update.
-        assertTrue(allComponentsInFssUpdate.await(30, TimeUnit.SECONDS), "component publish requests");
+        assertTrue(allComponentsInFssUpdate.await(30 * PlatformTestUtils.getTimeoutMultiplier(), TimeUnit.SECONDS), "component publish requests");
         assertNotNull(fleetStatusDetails);
         assertNotNull(fleetStatusDetails.get());
         assertEquals("ThingName", fleetStatusDetails.get().getThing());
